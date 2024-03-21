@@ -12,16 +12,7 @@
 
     <script>
         document.getElementById('loadData').addEventListener('click', function() {
-            const apiToken = 'SFWLzKwTcwfgZ9P6dCxPuXmHhXWiRDCm2KtsCWztDovBj7bAJMRPqHmcs4de';
-            const url = 'https://api.pulsus.mobi/v2/signal_strengths?page=1&per_page=500&device_id=1';
-
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'accept': 'application/json',
-                    'ApiToken': apiToken
-                }
-            })
+            fetch('/api/proxy')
             .then(response => {
                 if (response.ok) {
                     return response.json();
