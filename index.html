@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta API da Pulsus</title>
+</head>
+<body>
+    <h1>Dados da Força do Sinal</h1>
+    <button id="loadData">Carregar Dados</button>
+    <div id="dataContainer"></div>
+
+    <script>
+        document.getElementById('loadData').addEventListener('click', function() {
+            const apiToken = 'SFWLzKwTcwfgZ9P6dCxPuXmHhXWiRDCm2KtsCWztDovBj7bAJMRPqHmcs4de';
+            const url = 'https://api.pulsus.mobi/v2/signal_strengths?page=1&per_page=500&device_id=1';
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'accept': 'application/json',
+                    'ApiToken': apiToken
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('A requisição falhou: ' + response.status);
+            })
+            .then(data => {
+                const container = document.getElementById('dataContainer');
+                container.innerHTML = ''; // Limpa o conteúdo anterior
+                data.data.forEach(item => {
+                    const element = document.createElement('div');
+                    element.innerHTML = `
+                        <p>ID: ${item.id}</p>
+                        <p>Operadora: ${item.attributes.operator}</p>
+                        <p>Tipo de Rede: ${item.attributes.network_type}</p>
+                        <p>Força do Sinal: ${item.attributes.strength}</p>
+                    `;
+                    container.appendChild(element);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar os dados:', error);
+            });
+        });
+    </script>
+</body>
+</html>
